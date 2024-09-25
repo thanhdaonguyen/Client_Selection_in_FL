@@ -20,3 +20,38 @@ This is implementation for paper DOI: 10.1109/ICC.2019.8761315
 - `client_selection_methods.py`: The file implementing all client selection methods
 - `Utils/`: Folder containing useful tools for simulation of the paper.
     - `fluctuated_data_generator.py`: The file containing a function to randomly create data at clients for each round. 
+
+## Workflow
+
+To operate, run the file `execute.py`. The workflow in the file follows following steps:
+
+1. **Initialization**: 
+    - The code starts by initializing: clients (set $K$), server --> `execute.py` 
+    - Detail steps for performing the initialization --> `Initializer.py`
+  
+2. **Enter the training loop**:
+    - The process enter a loop of Resource Request, Client selection, Distribution, Scheduled Update & Upload, and Aggregation (just like the described protocol in the according paper). Details are describe in the following steps
+
+3. **Resource Request** 
+    - <mark>Right now, just assume that the server knows in advance all information of clients. Therefore this step is ignored</mark>
+
+
+4. **Client selection**
+    - This step perform the core algorithm for client selection.
+    - First, the primary-selected clients (set $K'$) is chosen from the intialized clients (set $K$) --> `primary_client_selection_methods.py`.
+    - Then, the secondary-selected clients (set $\mathbb{S}$) is chosen form primary-selected clients (set $K'$) --> `secondary_client_selection_methods.py`.
+
+5. **Distribution**
+    - This step only accounts for the calculattion of the time used for global model distribution --> `execute.py`
+
+6. **Scheduled Update & Upload** 
+    - From the secondary-selected clients (set $\mathbb{S}$) got from step 4, we know perform the training process at each selected client.
+    - Update (<mark>The details will be determined in the future. But the idea is:</mark>)
+        - The data size in each selected cliented is examined and that client will be allocated the exact amount of data from the dataset (Note that each data sample can only be allocated once in the whole process)
+        - We then run the learning process in each clients to output their models in a list
+        - The results of this learning (accuracy) is then stored
+    - Upload (<mark>This step is ignore as we are just simulating in a sole machine. Therefore doesn't need to "upload" to anywhere else</mark>)
+
+7. **Aggregation**
+    - This step calculate the global model attained after aggregating models from all clients.
+    - The accuracy result is stored.
