@@ -1,6 +1,8 @@
 
 from parameters import Parameters as params
 from Client import Client
+from Server import Server
+from Utils.fluctuated_data_generator import flucPointGenerator
 import random
 
 
@@ -14,10 +16,17 @@ class Initializer:
             client.id = i
             client.pos_X = random.uniform(0, 1)
             client.pos_Y = random.uniform(0, 1)
-            client.data_size = random.randint(1, 100)
+            client.data = flucPointGenerator(10,100,100)
             client.computing_speed = random.randint(1, 100)
             clients.append(client)
 
+        return clients
+
     def initialize_Server(self):
-        pass
+        
+        server = Server()
+        server.id = 0
+        server.pos_X = random.uniform(0, 1)
+        server.pos_Y = random.uniform(0, 1)
+        return server
 

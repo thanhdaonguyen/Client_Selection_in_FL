@@ -26,18 +26,17 @@ This is implementation for paper DOI: 10.1109/ICC.2019.8761315
 To operate, run the file `execute.py`. The workflow in the file follows following steps:
 
 1. **Initialization**: 
-    - The code starts by initializing: clients (set $K$), server --> `execute.py` 
+    - The code starts by initializing: clients (set $K$), server, selected client list (set $\mathbb{S}$) --> `execute.py` 
     - Detail steps for performing the initialization --> `Initializer.py`
   
 2. **Enter the training loop**:
-    - The process enter a loop of Resource Request, Client selection, Distribution, Scheduled Update & Upload, and Aggregation (just like the described protocol in the according paper). Details are describe in the following steps
+    - The process enter a loop of Resource Request, Client selection, Distribution, Scheduled Update & Upload, and Aggregation (just like the described protocol in the according paper). Details are described in the following steps
 
 3. **Resource Request** 
     - <mark>Right now, just assume that the server knows in advance all information of clients. Therefore this step is ignored</mark>
 
 
 4. **Client selection**
-    - This step perform the core algorithm for client selection.
     - First, the primary-selected clients (set $K'$) is chosen from the intialized clients (set $K$) --> `primary_client_selection_methods.py`.
     - Then, the secondary-selected clients (set $\mathbb{S}$) is chosen form primary-selected clients (set $K'$) --> `secondary_client_selection_methods.py`.
 
@@ -55,3 +54,9 @@ To operate, run the file `execute.py`. The workflow in the file follows followin
 7. **Aggregation**
     - This step calculate the global model attained after aggregating models from all clients.
     - The accuracy result is stored.
+
+
+## Note For Update
+- At the primary selection, just use the random strategy --> need to involve the genetic algorithm also
+- Data at clients are currently ranging from 10 to 100 --> need to adjust that later
+
