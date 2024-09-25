@@ -1,4 +1,4 @@
-class Servver:
+class Server:
 
     def __init__(self):
 

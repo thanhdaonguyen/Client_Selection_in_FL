@@ -37,8 +37,9 @@ To operate, run the file `execute.py`. The workflow in the file follows followin
 
 
 4. **Client selection**
-    - First, the primary-selected clients (set $K'$) is chosen from the intialized clients (set $K$) --> `primary_client_selection_methods.py`.
-    - Then, the secondary-selected clients (set $\mathbb{S}$) is chosen form primary-selected clients (set $K'$) --> `secondary_client_selection_methods.py`.
+    - This step will apply the two method FedCS and DDr to select clients. The selected sets of two methods will be used for simulation in following steps
+    - First, the primary-selected clients (set $K'$) is chosen from the intialized clients (set $K$) --> `clients_selection_methods.py`.
+    - Then, the secondary-selected clients (set $\mathbb{S}$) is chosen form primary-selected clients (set $K'$) --> `clients_selection_methods.py`.
 
 5. **Distribution**
     - This step only accounts for the calculattion of the time used for global model distribution --> `execute.py`
@@ -59,4 +60,5 @@ To operate, run the file `execute.py`. The workflow in the file follows followin
 ## Note For Update
 - At the primary selection, just use the random strategy --> need to involve the genetic algorithm also
 - Data at clients are currently ranging from 10 to 100 --> need to adjust that later
+- Throughput and computing speed are currently ranging from 10 to 100 --> need to adjust that later
 

@@ -1,11 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-
 def flucPointGenerator(lower_bound, upper_bound, n_points):
     # Generate some random points with smooth fluctuations
 # Parameters
-    x = np.linspace(0, n_points, n_points)
+    x = np.linspace(0, n_points - 1, n_points)
 
     # Generate random y-values
     y_random = np.random.randn(n_points)
@@ -25,11 +24,14 @@ def flucPointGenerator(lower_bound, upper_bound, n_points):
     x = np.round(x).astype(int)
     y = np.round(y).astype(int)
 
-    return (x, y)
+    return y
 
 if __name__ == '__main__':
-    
-    (x, y) = flucPointGenerator(10, 100, 100)
+
+    n_points = 100
+
+    x = np.linspace(0, n_points - 1, n_points)
+    y = flucPointGenerator(10, n_points, n_points)
     print(x)
     print(y)
     print(len(x))
