@@ -42,7 +42,28 @@ def get_total_upload_and_update_time(selected_clients, round):
 
     return total_time
 
+def get_optimal_total_upload_and_update_time(selected_clients, round):
 
+    selected_clients = sorted(selected_clients, key=lambda client: client.get_update_time(round), reverse=False)
+    total_time = 0
+
+    for client in selected_clients:
+        client_update_time = client.get_update_time(round)
+        client_upload_time = client.get_upload_time(round)
+
+        total_time += max(0, client_update_time - total_time)
+        total_time += client_upload_time
+
+    return total_time
+
+def get_total_data_size(selected_clients, round):
+    
+        total_data_size = 0
+    
+        for client in selected_clients:
+            total_data_size += client.data[round]
+    
+        return total_data_size
 
 def FedCS_client_selection(all_clients, round):
     #select the set K'
@@ -50,43 +71,56 @@ def FedCS_client_selection(all_clients, round):
     pri_clients = random_primary_client_selection(all_clients, round)
 
     #select the set S
-    select_clients = []
+    selected_clients = []
 
     while (len(pri_clients) > 0):
 
         best_client = pri_clients[0]
         
         for client in pri_clients:
-            time_with_current_client = get_total_upload_and_update_time(select_clients + [client], round)
-            time_with_best_client = get_total_upload_and_update_time(select_clients + [best_client], round)
+            time_with_current_client = get_total_upload_and_update_time(selected_clients + [client], round)
+            time_with_best_client = get_total_upload_and_update_time(selected_clients + [best_client], round)
 
             if time_with_current_client < time_with_best_client:
                 best_client = client
 
-        select_clients.append(best_client)
+        if get_total_upload_and_update_time(selected_clients + [best_client], round) < params.T_round: 
+            selected_clients.append(best_client)
         pri_clients.remove(best_client)
 
-    return select_clients
+    return selected_clients
 
 def DDr_client_selection(old_selected_clients, all_clients, round):
     #select the set K'
 
+    # pri_clients = random_primary_client_selection(all_clients, round)
     pri_clients = tactical_primary_client_selection(old_selected_clients, all_clients, round)
 
     #select the set S
-    select_clients = []
+    selected_clients = []
 
     while (len(pri_clients) > 0):
 
         best_client = pri_clients[0]
         
         for client in pri_clients:
-            if client.get_goodness(round) > best_client.get_goodness(round):
+
+            total_data_size_with_current_client = get_total_data_size(selected_clients + [client], round)
+            time_with_current_client = get_total_upload_and_update_time(selected_clients + [client], round)
+            data_density_with_current_client = total_data_size_with_current_client / time_with_current_client
+
+            total_data_size_with_best_client = get_total_data_size(selected_clients + [best_client], round)
+            time_with_best_client = get_total_upload_and_update_time(selected_clients + [best_client], round)
+            data_density_with_best_client = total_data_size_with_best_client / time_with_best_client
+
+            if data_density_with_current_client > data_density_with_best_client:
                 best_client = client
 
-        select_clients.append(best_client)
-        select_clients = sorted(select_clients, key=lambda client: client.get_update_time(round), reverse=False)
         
+        if get_total_upload_and_update_time(selected_clients + [best_client], round) < params.T_round:
+            selected_clients.append(best_client)
+            selected_clients = sorted(selected_clients, key=lambda client: client.get_update_time(round), reverse=False)
+
         pri_clients.remove(best_client)
 
-    return select_clients
+    return selected_clients

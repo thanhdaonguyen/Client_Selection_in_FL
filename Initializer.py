@@ -16,9 +16,9 @@ class Initializer:
             client.id = i
             client.pos_X = random.uniform(0, 1)
             client.pos_Y = random.uniform(0, 1)
-            client.data = flucPointGenerator(10,100,100)
-            client.computing_speed = flucPointGenerator(10,100,100)
-            client.throughput = flucPointGenerator(10,100,100)
+            client.data = flucPointGenerator(100,1000,params.num_rounds)
+            client.computing_speed = flucPointGenerator(10,100,params.num_rounds)
+            client.throughput = flucPointGenerator(50000000,1000000000,params.num_rounds)
             clients.append(client)
 
         return clients
