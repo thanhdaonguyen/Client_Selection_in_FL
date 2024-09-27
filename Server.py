@@ -3,7 +3,9 @@ class Server:
     def __init__(self):
         self.computing_resource = 0
         self.network_bandwidth = 0
-        
+        self.pos_X = 0 # TODO
+        self.pos_Y = 0
+    
     def weight_scalling_factor(clients_trn_data, client_id):
         client_ids = list(clients_trn_data.keys())
     
