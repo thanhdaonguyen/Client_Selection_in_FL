@@ -26,6 +26,6 @@ for round in range(params.num_rounds):
     # STEP 5: Model distribution
     
     # STEP 6: Sccheduled update and upload
-    run_learning_process(FedCS_selected_clients, 'FedCS')
-    run_learning_process(DDr_selected_clients, 'DDr')
+    run_learning_process(FedCS_selected_clients, round, 'FedCS')
+    run_learning_process(DDr_selected_clients, round, 'DDr')
     

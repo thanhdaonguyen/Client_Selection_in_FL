@@ -12,7 +12,7 @@ class Client:
         self.pos_Y = 0                         # y coordinate of the client
 
     def get_goodness(self, round):
-        return self.throughput[round]/self.computing_speed[round]
+        return self.get_update_time(round) + self.get_upload_time(round)
     
     def get_update_time(self, round):
         return self.data[round]/self.computing_speed[round]
