@@ -1,4 +1,4 @@
-import parameter as pr
+import parameters as pr
 
 def load(imgpath, paths, verbose=-1):
     data = list()

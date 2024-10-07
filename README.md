@@ -62,3 +62,19 @@ To operate, run the file `execute.py`. The workflow in the file follows followin
 - Data at clients are currently ranging from 10 to 100 --> need to adjust that later
 - Throughput and computing speed are currently ranging from 10 to 100 --> need to adjust that later
 
+## Note on merging source code with Thien
+- Client.data của Đạo đang là "số lượng data samples" theo từng round. Cần chuyển tên thành. Đề xuất chuyển thành "data thực theo từng round"
+--> Để truy cập được list các sample data của client0 tại round T thì dùng `client0.data[T]`
+
+- Cần hỏi Thiện, data đã gán cho các thực client được dùng khi nào
+
+- Cần thống nhất lại file parameters
+
+- Task mới:
+    - Đạo: 
+        - Implement việc khởi tạo clients phù hợp với đầu vào của hàm execute_FL()
+        - Viết các file vẽ graph bằng Matlab
+        - Bắt đầu viết: Tạo template, tạo khung các phần, lên todo list cho các phần viết, 
+    - Thiện: 
+        - Implement code FL với đầu vào mới là một list các client
+        - Chạy thử nghiệm và đánh giá kết quả learning
