@@ -1,4 +1,4 @@
-from parameter import *
+from parameters import *
 class Server:
     def __init__(self):
         self.computing_resource = 0

@@ -1,29 +1,28 @@
 import random
-from parameters import Parameters as params
+import parameters as pr
 
 
 def random_primary_client_selection(all_clients, round):
     #performing the client selection
-    return random.sample(all_clients, int(params.C * params.K))
+    return random.sample(all_clients, int(pr.C * pr.K))
 
 def tactical_primary_client_selection(old_selected_clients, all_clients, round):
 
     #if it is the first round, select randomly
     if round == 0:
-        return random.sample(all_clients, int(params.C * params.K))
+        return random.sample(all_clients, int(pr.C * pr.K))
 
     #get the best clients from the previous round
     sorted_old_clients = sorted(old_selected_clients, key=lambda client: client.get_goodness(round - 1), reverse=True)
 
-    best_old_clients = sorted_old_clients[:int(params.inherited_clients_rate * params.C * params.K)]
-
+    best_old_clients = sorted_old_clients[:int(pr.inherited_clients_rate * pr.C * pr.K)]
 
     #get the rest randomly from the remaining clients
     remaining_clients = []
     for client in all_clients:
         if client not in best_old_clients:
             remaining_clients.append(client)
-    new_random_clients = random.sample(remaining_clients, int(params.random_clients_rate * params.C * params.K))
+    new_random_clients = random.sample(remaining_clients, int(pr.random_clients_rate * pr.C * pr.K))
 
     #return the set K'
     primary_selected_clients = best_old_clients + new_random_clients
@@ -84,7 +83,7 @@ def FedCS_client_selection(all_clients, round):
             if time_with_current_client < time_with_best_client:
                 best_client = client
 
-        if get_total_upload_and_update_time(selected_clients + [best_client], round) < params.T_round: 
+        if get_total_upload_and_update_time(selected_clients + [best_client], round) < pr.T_round: 
             selected_clients.append(best_client)
         pri_clients.remove(best_client)
 
@@ -117,7 +116,7 @@ def DDr_client_selection(old_selected_clients, all_clients, round):
                 best_client = client
 
         
-        if get_total_upload_and_update_time(selected_clients + [best_client], round) < params.T_round:
+        if get_total_upload_and_update_time(selected_clients + [best_client], round) < pr.T_round:
             selected_clients.append(best_client)
             selected_clients = sorted(selected_clients, key=lambda client: client.get_update_time(round), reverse=False)
 

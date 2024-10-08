@@ -1,4 +1,4 @@
-import parameter as pr
+import parameters as pr
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Activation
 from tensorflow.keras.layers import Dense

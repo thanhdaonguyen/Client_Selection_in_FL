@@ -1,5 +1,4 @@
-import parameter as pr
-from parameters import Parameters as params
+import parameters as pr
 class Client:
 
     def __init__(self):
@@ -18,7 +17,7 @@ class Client:
         return self.data[round]/self.computing_speed[round]
     
     def get_upload_time(self, round):
-        return params.model_size/self.throughput[round]
+        return pr.model_size/self.throughput[round]
 
     def update(self):
         pass 
