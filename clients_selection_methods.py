@@ -1,5 +1,5 @@
 import random
-import parameters as pr pr
+import parameters as pr
 
 
 def random_primary_client_selection(all_clients, round):

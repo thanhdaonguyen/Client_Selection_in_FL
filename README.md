@@ -72,9 +72,12 @@ To operate, run the file `execute.py`. The workflow in the file follows followin
 
 - Task mới:
     - Đạo: 
-        - Implement việc khởi tạo clients phù hợp với đầu vào của hàm execute_FL()
+        - Implement việc khởi tạo clients phù hợp với đầu vào của hàm execute_FL():
+            + Vọc code của Thiện: Biết từng hàm làm gì
+            + Tải data về
+            + Chia data cho các client theo số lượng phù hợp
         - Viết các file vẽ graph bằng Matlab
         - Bắt đầu viết: Tạo template, tạo khung các phần, lên todo list cho các phần viết, 
     - Thiện: 
-        - Implement code FL với đầu vào mới là một list các client
-        - Chạy thử nghiệm và đánh giá kết quả learning
+        - Implement code FL với đầu vào mới là một list các client với data cho từng round
+        - Chạy thử nghiệm và đánh giá kết quả learning (ghi lại sau mỗi round training thì model có accuracy thế nào)

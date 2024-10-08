@@ -31,7 +31,7 @@ def test_batched(X_test,y_test,clients):
     return pr.tf.data.Dataset.from_tensor_slices((X_test, y_test)).batch(len(y_test)),clients_batched
 
 def get_data():
-    #declear path to your mnist data folder
+    #declare path to your mnist data folder
     img_path = pr.dataset_file_path + '\\trainingSet'
     #get the path list using the path object
     image_paths = list(pr.paths.list_images(img_path))
@@ -44,8 +44,5 @@ def get_data():
     label_list = lb.fit_transform(label_list)
 
     #split data into training and test set
-    X_train, X_test, y_train, y_test = pr.train_test_split(image_list, 
-                                                        label_list, 
-                                                        test_size=0.1, 
-                                                        random_state=42)
+    X_train, X_test, y_train, y_test = pr.train_test_split(image_list, label_list, test_size=0.1, random_state=42)
     return X_train, X_test, y_train, y_test

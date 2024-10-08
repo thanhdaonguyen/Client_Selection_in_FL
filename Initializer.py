@@ -1,5 +1,5 @@
 
-import parameters as pr pr
+import parameters as pr
 from Client import Client
 from Server import Server
 from Utils.fluctuated_data_generator import flucPointGenerator

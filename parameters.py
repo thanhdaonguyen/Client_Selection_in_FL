@@ -18,6 +18,15 @@ from tensorflow.keras.layers import Flatten
 dataset_file_path = os.path.join(os.path.dirname(__file__),'datasets\mnist')
 results_file_path = os.path.join(os.path.dirname(__file__),'results')
 
+num_epochs = 20    
+num_rounds = 10
+T_round = 360
+
+model_size = 5000000000              # Size of the model in bits
+
+inherited_clients_rate = 0.5
+random_clients_rate = 0.5
+
 lr = 0.01 
 loss='categorical_crossentropy'
 metrics = ['accuracy']
@@ -29,13 +38,5 @@ optimizer = SGD(learning_rate=lr,
 K = 1000                              # Number of clients in the system
 C = 0.3                           # Fraction of clients that are selected to participate in each round
 
-num_epochs = 20    
-num_rounds = 10
-T_round = 360
-
-model_size = 5000000000              # Size of the model in bits
-
-inherited_clients_rate = 0.5
-random_clients_rate = 0.5
 
 

@@ -1,5 +1,4 @@
 import parameters as pr
-import parameters as pr pr
 class Client:
 
     def __init__(self):

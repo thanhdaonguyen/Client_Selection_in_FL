@@ -1,4 +1,4 @@
-import parameters as pr pr
+import parameters as pr
 from Initializer import Initializer
 from clients_selection_methods import FedCS_client_selection, DDr_client_selection
 from federated_learning_operator import run_learning_process
