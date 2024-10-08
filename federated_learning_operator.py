@@ -8,52 +8,42 @@ from tensorflow.keras import backend as K
 
 def executeFL():
     X_train,X_test,y_train,y_test = ld.get_data()
-    client_lists = Client.create_clients(X_train,y_train, 12, 'clients')  # create clients with random data
-    testBatched, clients_batched = ld.test_batched(X_test,y_test,client_lists)
-    smlp_global = mt.SimpleMLP()
-    global_model = smlp_global.build(784, 10)
-    for comm_round in range(pr.num_rounds):
-
-        client0.data[comm_round]
-            
-        # get the global model's weights - will serve as the initial weights for all local models
-        global_weights = global_model.get_weights()
-        #initial list to collect local model weights after scalling
-        scaled_local_weight_list = list()
+    client_lists = Client.create_clients(X_train,y_train, pr.num_clients, 'clients')  # create clients with random data
+    testBatched, clients_batched = ld.batched(X_test,y_test,client_lists)
+    global_model = create_keras_model()
+    for round_num in range(pr.num_rounds):
+        print(f'Round {round_num + 1}/{pr.num_rounds}')
+        client_weights = []
         
-        #loop through each client and create new local model
-        for client_id in client_lists:
-            smlp_local = mt.SimpleMLP()
-            local_model = smlp_local.build(784, 10)
-            local_optimizer = pr.optimizer.__class__(**pr.optimizer.get_config())
-            local_model.compile(loss=pr.loss, 
-                        optimizer=local_optimizer, 
-                        metrics=pr.metrics)
-            
-            #set local model weight to the weight of the global model
-            local_model.set_weights(global_weights)
-            
-            #fit local model with client's data
-            local_model.fit(clients_batched[client_id], epochs=1, verbose=0)
-            
-            #scale the model weights and add to list
-            scaling_factor = Server.weight_scalling_factor(clients_batched, client_id)
-            scaled_weights = Server.scale_model_weights(local_model.get_weights(), scaling_factor)
-            scaled_local_weight_list.append(scaled_weights)
-            
-            #clear session to free memory after each communication round
-            K.clear_session()
-            
-        #to get the average over all the local model, we simply take the sum of the scaled weights
-    average_weights = Server.sum_scaled_weights(scaled_local_weight_list)
-    
-    #update global model 
-    global_model.set_weights(average_weights)
+        # Train model with each client
+        for client in range(pr.num_clients):
+            print(f'  Training on client {client + 1}/{pr.num_clients}')
+            client_model = create_keras_model()  # create model for client
+            client_model.set_weights(global_model.get_weights())  # update weights
+            weights = train_on_client(client_model, clients_batched[client])  # Training
+            client_weights.append(weights)  # Store weight
 
-    #test global model and print out metrics after each communications round
-    for(X_test, Y_test) in testBatched:
-        global_acc, global_loss = Server.test_model(X_test, Y_test, global_model, comm_round)
+        # Global weights
+        global_weights = average_weights(global_model.get_weights(), client_weights)
+        global_model.set_weights(global_weights)  # update global
 
+        for client_id, dataset in testBatched.items():
+            print(f'Evaluating global model on Client {client_id} test data:')
+            total_loss = 0
+            total_accuracy = 0
+            num_batches = 0
+
+            for x_batch, y_batch in dataset:
+                loss, accuracy = global_model.evaluate(x_batch, y_batch, verbose=0)
+                total_loss += loss
+                total_accuracy += accuracy
+                num_batches += 1
+
+            # Calculate average loss and accuracy
+            avg_loss = total_loss / num_batches if num_batches > 0 else 0
+            avg_accuracy = total_accuracy / num_batches if num_batches > 0 else 0
+
+            print(f'  Average Loss: {avg_loss:.4f}, Average Accuracy: {avg_accuracy:.4f}')
 
 def run_learning_process(clients, round, mode):
     if mode == 'FedCS':
@@ -76,3 +66,7 @@ def run_learning_process(clients, round, mode):
         total_data = sum([client.data[round] for client in clients])
         print('Total data DDr:', total_data)
         print("")
+
+
+if __name__ == '__main__':
+    executeFL()

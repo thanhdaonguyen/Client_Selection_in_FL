@@ -1,14 +1,10 @@
 import parameters as pr
 class Client:
-
-    def __init__(self):
-
-        self.id = None                         # client id
-        self.throughput = []                   # list stores throughput of client in each round (bits/sec)  
-        self.data = []                         # list stores number of data samples the client have in each round
-        self.computing_speed = []              # list stores the computing speed of clients each round (data samples/sec)
-        self.pos_X = 0                         # x coordinate of the client
-        self.pos_Y = 0                         # y coordinate of the client
+    def __init__(self,id,computing_resource,network_bandwidth):
+        self.id = id                             # client id
+        self.computing_resource = computing_resource            # list stores throughput of client in each round (bits/sec)               # list stores number of data samples the client have in each round
+        self.network_bandwidth = network_bandwidth              # list stores the computing speed of clients each round (data samples/sec)
+        self.data = None                                        # y coordinate of the client
 
     def get_goodness(self, round):
         return self.get_update_time(round) + self.get_upload_time(round)

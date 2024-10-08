@@ -24,11 +24,31 @@ def batch_data(data_shard, bs=32):
     dataset = pr.tf.data.Dataset.from_tensor_slices((list(data), list(label)))
     return dataset.shuffle(len(label)).batch(bs)
 
-def test_batched(X_test,y_test,clients):
+def batched(X_test,y_test,clients,batch_size = 32):
+    num_clients = len(clients)
     clients_batched = dict()
-    for (client_id, client) in clients.items():
-        clients_batched[client_id] = batch_data(client.data)
-    return pr.tf.data.Dataset.from_tensor_slices((X_test, y_test)).batch(len(y_test)),clients_batched
+    for i in range(len(clients)):
+        clients_batched[i] = batch_data(clients[i].data)
+        
+    client_test_batched = {}
+    total_samples = len(X_test)
+    
+    # Ensure we have enough samples for each client
+    if total_samples < num_clients:
+        raise ValueError("Not enough samples in x_test for the number of clients.")
+
+    samples_per_client = total_samples // num_clients
+    
+    for i in range(num_clients):
+        start_index = i * samples_per_client
+        end_index = (i + 1) * samples_per_client
+        client_x_test = X_test[start_index:end_index]
+        client_y_test = y_test[start_index:end_index]
+        # Create a TensorFlow dataset and batch it
+        client_test_batched[i] = pr.tf.data.Dataset.from_tensor_slices((client_x_test, client_y_test)).batch(32)
+    
+    return client_test_batched,clients_batched
+
 
 def get_data():
     #declare path to your mnist data folder
