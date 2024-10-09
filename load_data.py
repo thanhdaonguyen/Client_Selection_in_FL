@@ -29,25 +29,7 @@ def batched(X_test,y_test,clients,batch_size = 32):
     clients_batched = dict()
     for i in range(len(clients)):
         clients_batched[i] = batch_data(clients[i].data)
-        
-    client_test_batched = {}
-    total_samples = len(X_test)
-    
-    # Ensure we have enough samples for each client
-    if total_samples < num_clients:
-        raise ValueError("Not enough samples in x_test for the number of clients.")
-
-    samples_per_client = total_samples // num_clients
-    
-    for i in range(num_clients):
-        start_index = i * samples_per_client
-        end_index = (i + 1) * samples_per_client
-        client_x_test = X_test[start_index:end_index]
-        client_y_test = y_test[start_index:end_index]
-        # Create a TensorFlow dataset and batch it
-        client_test_batched[i] = pr.tf.data.Dataset.from_tensor_slices((client_x_test, client_y_test)).batch(32)
-    
-    return client_test_batched,clients_batched
+    return clients_batched
 
 
 def get_data():
@@ -66,3 +48,18 @@ def get_data():
     #split data into training and test set
     X_train, X_test, y_train, y_test = pr.train_test_split(image_list, label_list, test_size=0.1, random_state=42)
     return X_train, X_test, y_train, y_test
+
+def saveResultsToFile(results, filename):
+    directory = pr.results_file_path
+    full_file_path = pr.os.path.join(directory, filename) 
+    # Tạo thư mục nếu nó không tồn tại
+    pr.os.makedirs(directory, exist_ok=True)
+    
+    # Mở file để ghi
+    with open(filename, 'w') as f:
+        # Ghi tiêu đề cột
+        f.write(f"{'Round':<6} {'Average Loss':<15} {'Average Accuracy':<15}\n")
+        
+        # Ghi dữ liệu
+        for round_num, (avg_loss, avg_accuracy) in results.items():
+            f.write(f"{round_num:<6} {avg_loss:<15.4f} {avg_accuracy:<15.4f}\n")

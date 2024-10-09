@@ -23,7 +23,7 @@ results_file_path = os.path.join(os.path.dirname(__file__),'results')
 num_epochs = 20    
 num_rounds = 10
 T_round = 360
-num_clients = 12
+num_clients = 10
 
 model_size = 5000000000              # Size of the model in bits
 
