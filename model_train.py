@@ -1,16 +1,14 @@
 import parameters as pr
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Activation
-from tensorflow.keras.layers import Dense
+import time 
 
-class SimpleMLP:
-    @staticmethod
-    def build(shape, classes):
-        model = Sequential()
-        model.add(Dense(200, input_shape=(shape,)))
-        model.add(Activation("relu"))
-        model.add(Dense(200))
-        model.add(Activation("relu"))
-        model.add(Dense(classes))
-        model.add(Activation("softmax"))
-        return model
+# define model
+def create_keras_model():
+    model = pr.keras.Sequential([
+        pr.keras.layers.Dense(128, activation='relu', input_shape=(784,)),
+        pr.keras.layers.Dense(10, activation='softmax')
+    ])
+    model.compile(optimizer='adam', 
+                  loss='categorical_crossentropy', 
+                  metrics=['accuracy'])
+    return model
+

@@ -60,7 +60,7 @@ def get_total_data_size(selected_clients, round):
         total_data_size = 0
     
         for client in selected_clients:
-            total_data_size += client.data[round]
+            total_data_size += len(client.data)
     
         return total_data_size
 
@@ -89,7 +89,7 @@ def FedCS_client_selection(all_clients, round):
 
     return selected_clients
 
-def DDr_client_selection(old_selected_clients, all_clients, round):
+def DDrCS_client_selection(old_selected_clients, all_clients, round):
     #select the set K'
 
     # pri_clients = random_primary_client_selection(all_clients, round)

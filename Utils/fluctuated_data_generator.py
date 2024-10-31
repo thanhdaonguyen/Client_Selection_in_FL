@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-def flucPointGenerator(lower_bound, upper_bound, n_points):
+def flucPointGenerator(lower_bound, upper_bound, n_points, type_of_y="float"):
     # Generate some random points with smooth fluctuations
 # Parameters
     x = np.linspace(0, n_points - 1, n_points)
@@ -22,7 +22,8 @@ def flucPointGenerator(lower_bound, upper_bound, n_points):
 
     # Plot the points
     x = np.round(x).astype(int)
-    y = np.round(y).astype(int)
+    if type_of_y == "int":
+        y = np.round(y).astype(int)
 
     return y
 
