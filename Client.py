@@ -1,19 +1,22 @@
 import parameters as pr
 class Client:
-    def __init__(self,id,computing_resource,network_bandwidth):
+    def __init__(self):
         self.id = id                             # client id
-        self.computing_resource = computing_resource            # list stores throughput of client in each round (bits/sec)               # list stores number of data samples the client have in each round
-        self.network_bandwidth = network_bandwidth              # list stores the computing speed of clients each round (data samples/sec)
-        self.data = None                                        # y coordinate of the client
+        self.computing_resource = 0           # list stores the computing speed of clients each round (data samples/sec)
+        self.through_put = 0 # list stores throughput of client in each round (bits/sec)               
+        self.data = None  # list data samples the client have 
+        self.model = None  # model of client
+            
+                                              
 
     def get_goodness(self, round):
-        return self.get_update_time(round) + self.get_upload_time(round)
+        return len(self.data) / (self.get_update_time(round) + self.get_upload_time(round))
     
     def get_update_time(self, round):
-        return self.data[round]/self.computing_speed[round]
+        return len(self.data) / self.computing_speed[round]
     
     def get_upload_time(self, round):
-        return pr.model_size/self.throughput[round]
+        return pr.model_size / self.throughput[round]
 
     def update(self):
         pass 
@@ -23,8 +26,8 @@ class Client:
         for i in range(num_clients):
             id = i
             computing_resource = pr.random.randint(1,100)
-            network_bandwidth = pr.random.randint(1,100)
-            new_client = Client(id, computing_resource, network_bandwidth)
+            throughput = pr.random.randint(1,100)
+            new_client = Client(id, computing_resource, throughput)
             client_list[new_client.id]=new_client
 
         #randomize the data

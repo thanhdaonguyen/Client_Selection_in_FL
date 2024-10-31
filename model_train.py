@@ -1,4 +1,5 @@
 import parameters as pr
+import time 
 
 # define model
 def create_keras_model():
@@ -10,3 +11,4 @@ def create_keras_model():
                   loss='categorical_crossentropy', 
                   metrics=['accuracy'])
     return model
+
